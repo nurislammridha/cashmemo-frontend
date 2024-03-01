@@ -1,0 +1,6 @@
+export const GET_SELL_INPUT = "GET_SELL_INPUT";
+export const GET_SELL_ARR = "GET_SELL_ARR";
+export const REMOVE_SELL_ARR = "REMOVE_SELL_ARR";
+export const IS_CREATE_CLIENT = "IS_CREATE_CLIENT";
+export const CLIENT_LIST = "CLIENT_LIST";
+export const CLIENT_DELETED = "CLIENT_DELETED";
