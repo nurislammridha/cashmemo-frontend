@@ -49,7 +49,7 @@ const SellList = () => {
           Add Sell
         </a>
       </div>
-      <div className="mt-3">
+      {/* <div className="mt-3">
         {ClientArrList != null && ClientArrList.length > 0 && (
           <table className="table table-striped">
             <thead>
@@ -81,7 +81,7 @@ const SellList = () => {
             </tbody>
           </table>
         )}
-      </div>
+      </div> */}
     </>
   );
 };

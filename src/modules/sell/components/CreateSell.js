@@ -192,7 +192,7 @@ const CreateSell = () => {
                   </a></td>
                 </tr>
               ))}
-              <tr><td colSpan={5}></td></tr>
+              <tr><td colSpan={6}></td></tr>
               <tr>
                 <td colSpan={3}></td>
                 <td>Total</td>
