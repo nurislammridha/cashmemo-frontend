@@ -127,12 +127,20 @@ tr td {
 
 .total {
     position: relative;
-    ;
 }
+
 
 .total span {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.download {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 20px;
+    margin-bottom: 1px solid #ddd;
 }

@@ -6,7 +6,7 @@ import SellListContainer from "./modules/sell/views/SellListContainer";
 import CreateSellContainer from "./modules/sell/views/CreateSellContainer";
 import CreateClientContainer from "./modules/client/views/CreateClientContainer";
 import ClientContainer from "./modules/client/views/ClientContainer";
-import downloadPdf from "./modules/pdf/DownloadPdf";
+import DownloadPdf from "./modules/sell/components/DownloadPdf";
 
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 
@@ -42,8 +42,8 @@ const routes = [
   },
   {
     path: "/download",
-    name: "Download",
-    component: downloadPdf,
+    name: "download pdf",
+    component: DownloadPdf,
   },
 
 

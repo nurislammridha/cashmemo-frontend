@@ -12,66 +12,89 @@ export const GetSellInput = (name, value) => (dispatch) => {
 };
 export const GetSellArr = (data) => (dispatch) => {
   const { productId, productName, mrp, quantity } = data
+  if (productId.length === 0) {
+    showToast("error", "Please select a product!");
+    return 0;
+  } else if (mrp < 0) {
+    showToast("error", "Mrp shouldn't be negative!");
+    return 0;
+  } else if (quantity < 1) {
+    showToast("error", "Quantity should be one or more");
+    return 0;
+  }
+  dispatch(GetSellInput("productName", ""));
+  dispatch(GetSellInput("productId", ""));
+  dispatch(GetSellInput("mrp", 0));
+  dispatch(GetSellInput("quantity", 1));
   const obj = { productId, productName, mrp, quantity }
   dispatch({ type: Types.GET_SELL_ARR, payload: obj });
 };
 export const RemoveSellArr = (id) => (dispatch) => {
   dispatch({ type: Types.REMOVE_SELL_ARR, payload: id });
 };
-export const SubmitClient = ({ name, address, phone }) => (dispatch) => {
-  if (name.length === 0) {
-    showToast("error", "Name shouldn't be empty");
+export const SubmitSell = (data, arr) => (dispatch) => {
+  const { clientId, balance, previousDue } = data
+  const d = new Date()
+  if (clientId.length === 0) {
+    showToast("error", "Please select a client!");
     return 0;
-  } else if (address.length === 0) {
-    showToast("error", "Address shouldn't be empty");
+  } else if (arr.length === 0) {
+    showToast("error", "Please select at least one product");
     return 0;
-  } else if (phone.length === 0) {
-    showToast("error", "Phone shouldn't be empty");
+  } else if (balance < 0) {
+    showToast("error", "Pay amount shouldn't be negative");
     return 0;
   }
-  const url = `${process.env.REACT_APP_API_URL}client`;
-  dispatch({ type: Types.IS_CREATE_CLIENT, payload: true });
-  const postData = { name, address, phone };
+  const url = `${process.env.REACT_APP_API_URL}sell`;
+  dispatch({ type: Types.IS_CREATE_SELL, payload: true });
+  const postData = {
+    clientId, clientInfo: clientId, previousDue,
+    currentDue: (getTotal(arr) + previousDue) - balance,
+    total: getTotal(arr), grandTotal: getTotal(arr) + previousDue, pay: parseInt(balance), sellingDate: d, sellingProducts: arr
+  };
+  // console.log('postData', postData)
+  // return 0
   try {
     Axios.post(url, postData)
       .then((res) => {
         if (res.data.status) {
           showToast("success", res.data.message);
-          dispatch({ type: Types.IS_CREATE_CLIENT, payload: false });
+          dispatch({ type: Types.IS_CREATE_SELL, payload: false });
+          dispatch({ type: Types.AFTER_CREATE_SELL, payload: true });
         } else {
           showToast("error", res.data.message);
-          dispatch({ type: Types.IS_CREATE_CLIENT, payload: false });
+          dispatch({ type: Types.IS_CREATE_SELL, payload: false });
         }
       })
       .catch((err) => {
-        dispatch({ type: Types.IS_CREATE_CLIENT, payload: false });
+        dispatch({ type: Types.IS_CREATE_SELL, payload: false });
         const message = JSON.parse(err.request.response).message;
         showToast("error", message);
       });
   } catch (error) {
-    dispatch({ type: Types.IS_CREATE_CLIENT, payload: false });
+    dispatch({ type: Types.IS_CREATE_SELL, payload: false });
     showToast("error", "Something went wrong");
   }
 };
-export const GetClientList = () => (dispatch) => {
-  const url = `${process.env.REACT_APP_API_URL}client`;
+export const GetSellList = () => (dispatch) => {
+  const url = `${process.env.REACT_APP_API_URL}sell`;
   try {
     Axios.get(url).then((res) => {
       if (res.data.status) {
-        dispatch({ type: Types.CLIENT_LIST, payload: res.data.result });
+        dispatch({ type: Types.SELL_LIST, payload: res.data.result });
       }
     });
   } catch (error) {
     showToast("error", "Something went wrong");
   }
 };
-export const ClientDelete = (id) => (dispatch) => {
-  const url = `${process.env.REACT_APP_API_URL}client/${id}`;
+export const SellDelete = (id) => (dispatch) => {
+  const url = `${process.env.REACT_APP_API_URL}sell/${id}`;
   try {
     Axios.delete(url).then((res) => {
       if (res.data.status) {
         showToast("success", res.data.message);
-        dispatch({ type: Types.CLIENT_DELETED, payload: true });
+        dispatch({ type: Types.SELL_DELETED, payload: true });
       }
     });
   } catch (error) {
@@ -79,8 +102,8 @@ export const ClientDelete = (id) => (dispatch) => {
   }
 };
 
-export const falseClientDeleted = () => (dispatch) => {
-  dispatch({ type: Types.CLIENT_DELETED, payload: false });
+export const falseSellDeleted = () => (dispatch) => {
+  dispatch({ type: Types.SELL_DELETED, payload: false });
 }
 
 export const getClientOption = (data) => {

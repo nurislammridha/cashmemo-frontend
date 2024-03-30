@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetClientList, GetSellArr, GetSellInput, RemoveSellArr, SubmitClient, getClientOption, getProductOption, getTotal } from "../_redux/SellAction";
+import { GetSellArr, GetSellInput, RemoveSellArr, SubmitClient, SubmitSell, getClientOption, getProductOption, getTotal } from "../_redux/SellAction";
 import Select from "react-select";
 import { GetproductList } from "src/modules/product/_redux/ProductAction";
+import { GetClientList } from "src/modules/client/_redux/ClientAction";
 const CreateSell = () => {
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState("");
   const sellInput = useSelector((state) => state.sellInfo.sellInput);
   const sellArr = useSelector((state) => state.sellInfo.sellArr);
-  const isClient = useSelector((state) => state.clientInfo.isClient);
-  const isSuccess = useSelector((state) => state.clientInfo.isSuccess);
+  const isSell = useSelector((state) => state.sellInfo.isSell);
   const ClientArrList = useSelector(
     (state) => state.clientInfo.clientList
   );
@@ -22,31 +19,20 @@ const CreateSell = () => {
     dispatch(GetSellInput(name, value));
   };
   const handleSubmit = () => {
-    dispatch(SubmitClient({ name, address, phone }));
+    dispatch(SubmitSell(sellInput, sellArr));
   };
   const handleRemove = (id) => {
     dispatch(RemoveSellArr(id));
   };
   const handleAdd = () => {
     dispatch(GetSellArr(sellInput));
-    handleChangeInput("productName", "");
-    handleChangeInput("productId", "");
-    handleChangeInput("mrp", 0);
-    handleChangeInput("quantity", 1);
+
   };
   useEffect(() => {
     dispatch(GetClientList());
     dispatch(GetproductList());
   }, [])
 
-  useEffect(() => {
-    if (!isClient) {
-      setName("")
-      setAddress("")
-      setPhone("")
-    }
-  }, [isClient])
-  console.log('sellArr', sellArr)
   return (
     <>
       <h6 className="alert alert-secondary text-center">Sell Your Products</h6>
@@ -133,6 +119,7 @@ const CreateSell = () => {
         <div>
           <h6 className="mb-3">Name</h6>
           <input
+            disabled
             className="form-control"
             value={sellInput.name}
             type="text"
@@ -143,6 +130,7 @@ const CreateSell = () => {
         <div className="mt-3">
           <h6 className="mb-3">Address</h6>
           <input
+            disabled
             className="form-control"
             value={sellInput.address}
             type="text"
@@ -153,6 +141,7 @@ const CreateSell = () => {
         <div className="mt-3">
           <h6 className="mb-3">Phone</h6>
           <input
+            disabled
             className="form-control"
             value={sellInput.phone}
             type="text"
@@ -213,7 +202,7 @@ const CreateSell = () => {
               </tr>
               <tr>
                 <td colSpan={3}></td>
-                <td>Balance</td>
+                <td>Pay</td>
                 <td colSpan={2}>
                   <input
                     style={{ width: "200px" }}
@@ -236,7 +225,7 @@ const CreateSell = () => {
         )}
       </div>
       <div>
-        {isClient ? (
+        {isSell ? (
           <a className="btn btn-success btn-sm mt-3 text-light">
             {" "}
             <span

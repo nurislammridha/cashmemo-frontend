@@ -15,9 +15,9 @@ const initialState = {
     balance: 0
   },
   sellArr: [],
-  isClient: false,
-  clientList: [],
-  clientDeleted: false
+  isSell: false,
+  sellList: [],
+  sellDeleted: false
 };
 const SellReducer = (state = initialState, action) => {
   const newState = { ...state };
@@ -36,26 +36,33 @@ const SellReducer = (state = initialState, action) => {
         ...state,
         sellArr: sellArr,
       };
+    case Types.AFTER_CREATE_SELL:
+      const sellInput2 = initialState.sellInput;
+      return {
+        ...state,
+        sellInput: sellInput2,
+        sellArr: []
+      };
     case Types.REMOVE_SELL_ARR:
       const removeSellArr = [...state.sellArr].filter(value => value.productId !== action.payload);
       return {
         ...state,
         sellArr: removeSellArr,
       };
-    case Types.IS_CREATE_CLIENT:
+    case Types.IS_CREATE_SELL:
       return {
         ...state,
-        isClient: action.payload,
+        isSell: action.payload,
       };
-    case Types.CLIENT_LIST:
+    case Types.SELL_LIST:
       return {
         ...state,
-        clientList: action.payload,
+        sellList: action.payload,
       };
-    case Types.CLIENT_DELETED:
+    case Types.SELL_DELETED:
       return {
         ...state,
-        clientDeleted: action.payload,
+        sellDeleted: action.payload,
       };
     default:
       break;
