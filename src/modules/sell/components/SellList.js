@@ -4,7 +4,11 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { ClientDelete, GetClientList, falseClientDeleted } from "../_redux/SellAction";
 import { useHistory } from "react-router-dom";
+import { jsPDF } from "jspdf";
+import DownloadPdf from "src/modules/pdf/DownloadPdf";
 const SellList = () => {
+  let x = false
+  const ref = React.createRef();
   const history = useHistory();
   const ClientArrList = useSelector(
     (state) => state.clientInfo.clientList
@@ -37,6 +41,33 @@ const SellList = () => {
       ],
     });
   };
+  const handleDownLoad = () => {
+    var doc = new jsPDF("p", "px", [1000, 1000], "a2", false, false, 2, 1.0);
+    doc.html(document.querySelector("#con"), {
+      callback: function (pdf) {
+
+        pdf.deletePage(2)
+        pdf.deletePage(3)
+        pdf.deletePage(4)
+        pdf.deletePage(5)
+        pdf.deletePage(6)
+        pdf.deletePage(2)
+        pdf.deletePage(3)
+        pdf.deletePage(2)
+        pdf.deletePage(2)
+        pdf.deletePage(2)
+        // pdf.deletePage(8)
+        // pdf.deletePage(9)
+        // pdf.deletePage(10)
+        // pdf.deletePage(11)
+        // pdf.deletePage(12)
+        // pdf.deletePage(13)
+        // pdf.deletePage(14)
+        pdf.save("invoice-" + "rgrrgr" + ".pdf");
+        // setLoader(false);
+      },
+    });
+  }
   console.log('ClientArrList', ClientArrList)
   return (
     <>
@@ -49,7 +80,7 @@ const SellList = () => {
           Add Sell
         </a>
       </div>
-      {/* <div className="mt-3">
+      <div className="mt-3">
         {ClientArrList != null && ClientArrList.length > 0 && (
           <table className="table table-striped">
             <thead>
@@ -70,6 +101,12 @@ const SellList = () => {
                   <td>{item.phone}</td>
                   <td>
                     <a
+                      className="btn btn-primary btn-sm mr-2"
+                      onClick={() => handleDownLoad(item._id)}
+                    >
+                      <i className="fa fa-file-pdf-o"></i>
+                    </a>
+                    <a
                       className="btn btn-danger btn-sm"
                       onClick={() => handleDelete(item._id)}
                     >
@@ -81,7 +118,10 @@ const SellList = () => {
             </tbody>
           </table>
         )}
-      </div> */}
+      </div>
+      <div id="con">
+        <DownloadPdf ref={ref} />
+      </div>
     </>
   );
 };

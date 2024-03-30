@@ -6,6 +6,7 @@ import SellListContainer from "./modules/sell/views/SellListContainer";
 import CreateSellContainer from "./modules/sell/views/CreateSellContainer";
 import CreateClientContainer from "./modules/client/views/CreateClientContainer";
 import ClientContainer from "./modules/client/views/ClientContainer";
+import downloadPdf from "./modules/pdf/DownloadPdf";
 
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 
@@ -38,6 +39,11 @@ const routes = [
     path: "/product-update",
     name: "Create Product",
     component: EditProductContainer,
+  },
+  {
+    path: "/download",
+    name: "Download",
+    component: downloadPdf,
   },
 
 
