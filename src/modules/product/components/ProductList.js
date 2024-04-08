@@ -33,7 +33,7 @@ const ProductList = () => {
   };
   const handleEdit = (data) => {
     dispatch(PreUpdateProduct(data));
-    history.push("/product-update");
+    history.push(`/product-edit/${data._id}`);
   };
 
   useEffect(() => {
@@ -87,12 +87,12 @@ const ProductList = () => {
                   <td>{item.productName}</td>
                   <td>{item.productMRP}</td>
                   <td>
-                    {/* <a
+                    <a
                       className="btn btn-outline-success btn-sm mr-2"
                       onClick={() => handleEdit(item)}
                     >
                       <i className="fa fa-pencil"></i>
-                    </a> */}
+                    </a>
                     <a
                       className="btn btn-danger btn-sm"
                       onClick={() => handleDelete(item._id)}

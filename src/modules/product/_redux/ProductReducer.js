@@ -47,16 +47,13 @@ const ProductReducer = (state = initialState, action) => {
         productDeleted: action.payload
       }
     case Types.PRE_UPDATE_PRODUCT:
-      console.log("action.payload", action.payload);
       const {
-        _id,
         productName,
         productMRP
       } = action.payload;
       let productEdit = initialState.productInput;
       productEdit.productName = productName;
       productEdit.productMRP = productMRP;
-
       return {
         ...state,
         productInput: productEdit,

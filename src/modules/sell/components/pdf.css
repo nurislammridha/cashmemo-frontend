@@ -52,18 +52,18 @@
     margin-left: 10px;
 }
 
-.table {
+.table2 {
     margin-top: 20px;
     /* border: 1px solid black; */
 }
 
-.table table {
+.table2 table {
     /* border-collapse: collapse; */
     /* Collapsing borders */
     width: 100%;
 }
 
-.table table th {
+.table2 table th {
     font-size: 12px;
 }
 
@@ -76,7 +76,8 @@ tr td {
     padding: 5px 0px !important;
     margin: 0 !important;
     text-align: center;
-    border: 0.2px solid black !important;
+    border: 0.2px solid #413181 !important;
+    color: #413181;
 }
 
 tr td {

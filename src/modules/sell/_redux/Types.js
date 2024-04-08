@@ -5,3 +5,5 @@ export const IS_CREATE_SELL = "IS_CREATE_SELL";
 export const SELL_LIST = "SELL_LIST";
 export const SELL_DELETED = "SELL_DELETED";
 export const AFTER_CREATE_SELL = "AFTER_CREATE_SELL";
+export const PRE_UPDATE_SELL = "PRE_UPDATE_SELL";
+export const AFTER_UPDATE_SELL = "AFTER_UPDATE_SELL";

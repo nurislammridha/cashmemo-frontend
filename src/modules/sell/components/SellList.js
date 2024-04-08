@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { useHistory } from "react-router-dom";
-import { GetSellList, SellDelete, falseSellDeleted } from "../_redux/SellAction";
+import { GetSellList, PreUpdateSell, SellDelete, falseSellDeleted } from "../_redux/SellAction";
 import moment from 'moment'
 const SellList = () => {
   const [modalShow, setModalShow] = useState(false);
@@ -16,6 +16,10 @@ const SellList = () => {
     (state) => state.sellInfo.sellDeleted
   );
   const dispatch = useDispatch();
+  const handleEdit = (data) => {
+    dispatch(PreUpdateSell(data));
+    history.push(`/sell-edit/${data._id}`);
+  };
   useEffect(() => {
     dispatch(GetSellList());
   }, []);
@@ -82,18 +86,18 @@ const SellList = () => {
                     >
                       <i className="fa fa-eye"></i>
                     </a>
-                    {/* <a
-                      className="btn btn-primary btn-sm mr-2"
-                      onClick={() => handleDownLoad(item._id)}
+                    <a
+                      className="btn btn-outline-success btn-sm mr-2"
+                      onClick={() => handleEdit(item)}
                     >
-                      <i className="fa fa-file-pdf-o"></i>
-                    </a> */}
-                    {/* <a
+                      <i className="fa fa-pencil"></i>
+                    </a>
+                    <a
                       className="btn btn-danger btn-sm"
                       onClick={() => handleDelete(item._id)}
                     >
                       <i className="fa fa-trash"></i>
-                    </a> */}
+                    </a>
                   </td>
                 </tr>
               ))}

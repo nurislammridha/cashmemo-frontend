@@ -1,4 +1,4 @@
-import React, { createRef, useState } from 'react'
+import React, { createRef, useRef, useState } from 'react'
 import './pdf.css'
 import canonIcon from './img/canon.png'
 import coolzerIcon from './img/coolzer.png'
@@ -11,13 +11,21 @@ import spIcon from './img/sp.jpg'
 import { jsPDF } from "jspdf";
 import { useHistory, useLocation } from 'react-router-dom'
 import moment from 'moment'
+import { convertNumberToWords } from '../_redux/SellAction'
+import { useReactToPrint } from 'react-to-print';
 const DownloadPdf = () => {
     const history = useHistory()
     const location = useLocation()
-    const { clientInfo, currentDue, grandTotal, pay, previousDue, sellingDate, sellingProducts, total } = location?.state?.data || {}
+    const { clientInfo, currentDue, grandTotal, pay, previousDue, sellingDate, sellingProducts, total, discount } = location?.state?.data || {}
     const { name, address, phone } = clientInfo || {}
+    let pdfTittle = name + "-" + moment(sellingDate).format('ll')
     const ref = createRef();
     const [loader, setLoader] = useState(false)
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+        documentTitle: pdfTittle,
+    });
     const handleDownLoad = () => {
         setLoader(true);
         var doc = new jsPDF("p", "px", [1000, 1000], "a2", false, false, 2, 1.0);
@@ -33,26 +41,34 @@ const DownloadPdf = () => {
                 pdf.deletePage(2)
                 pdf.deletePage(2)
                 pdf.deletePage(2)
-                pdf.save("invoice-" + "rgrrgr" + ".pdf");
+                pdf.save(pdfTittle + ".pdf");
                 setLoader(false);
                 history.push('/sell')
             },
         });
     }
-    console.log('history?.state?.data', location?.state?.data)
+    // console.log('history?.state?.data', location?.state?.data)
     return (
         <>
             <div className='download'>
                 <h6>Download Cash Memo</h6>
-                <a
-                    className='btn btn-success text-light'
-                    onClick={() => !loader && handleDownLoad()}
-                >
-                    {loader ? "Downloading" : "Download"}
-                </a>
+                <div>
+                    <a
+                        className='btn btn-success text-light mr-3'
+                        onClick={() => handlePrint()}
+                    >
+                        {"PRINT"}
+                    </a>
+                    <a
+                        className='btn btn-success text-light'
+                        onClick={() => !loader && handleDownLoad()}
+                    >
+                        {loader ? "Downloading" : "Download"}
+                    </a>
+                </div>
             </div>
             <div ref={ref} id="con">
-                <div className='container' >
+                <div className='container' ref={componentRef}>
                     <div className='header'>
                         <h1>It Solutions Computer</h1>
                         <div><span>Show Room :</span> Friends Arcade Market (4th Floor), 77, Lower Jessore Road</div>
@@ -62,15 +78,15 @@ const DownloadPdf = () => {
                     </div>
                     <div className='bill_no'>
                         <div>Bill No : 901</div>
-                        <div className='cash_memo'>CASH MEMO</div>
-                        <div>Date: <span>{moment(sellingDate).format('lll')}</span></div>
+                        <div className='cash_memo'>INVOICE</div>
+                        <div><span>{moment(sellingDate).format('ll')}</span></div>
                     </div>
                     <div className='buyer_info'>
                         <div className='name'>Name:<span>{name}</span></div>
                         <div className='phone'>Phone:<span>{phone}</span></div>
                         <div className='address'>Address:<span>{address}</span></div>
                     </div>
-                    <div className='table'>
+                    <div className='table2'>
                         <table >
                             <tr>
                                 <th className='sl'>Sl.No</th>
@@ -90,7 +106,7 @@ const DownloadPdf = () => {
                             ))}
 
                             <tr>
-                                <td colSpan={3} rowSpan={2} className='goods total'>
+                                <td colSpan={3} rowSpan={3} className='goods total'>
 
                                     <div className='mt-2'>Goods received in good order & condition.</div>
                                     <div>sold Goods are not returnable & refundable</div>
@@ -103,10 +119,14 @@ const DownloadPdf = () => {
                                 <th><span>Pre. Due</span></th>
                                 <td><span>{previousDue}</span></td>
                             </tr>
+                            <tr>
+                                <th><span>Discount</span></th>
+                                <td><span>{discount}</span></td>
+                            </tr>
 
                             <tr>
                                 <td colSpan={3} rowSpan={3} className='total'>
-                                    <span> Taka in words: Fifty lakh five thousand fifty two taka</span>
+                                    <span> {convertNumberToWords(pay)} Taka Only</span>
                                 </td>
                                 <th><span>Gra. Total</span></th>
                                 <td><span>{grandTotal}</span></td>

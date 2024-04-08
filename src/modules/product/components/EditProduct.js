@@ -6,17 +6,18 @@ import {
   GetProductInput,
   UpdateProduct,
 } from "../_redux/ProductAction";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 const EditProduct = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-
+  const { id } = useParams()
   const productInput = useSelector((state) => state.productInfo.productInput);
   const afterUpdate = useSelector((state) => state.productInfo.afterUpdate);
   const isCreateProduct = useSelector(
     (state) => state.productInfo.isCreateProduct
   );
   const handleSubmit = () => {
-    dispatch(UpdateProduct(productInput));
+    dispatch(UpdateProduct(productInput, id));
   };
   const handleChangeInput = (name, value, e) => {
     dispatch(GetProductInput(name, value, e));
@@ -67,7 +68,7 @@ const EditProduct = () => {
                 className="btn btn-outline-success mt-3"
                 onClick={() => handleSubmit()}
               >
-                Update
+                UPDATE
               </a>
             )}
           </div>

@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetSellArr, GetSellInput, RemoveSellArr, SubmitClient, SubmitSell, getClientOption, getProductOption, getTotal } from "../_redux/SellAction";
+import { FalseAfterUpdate, GetSellArr, GetSellInput, RemoveSellArr, SubmitClient, SubmitSell, SubmitSellUpdate, getClientOption, getProductOption, getTotal } from "../_redux/SellAction";
 import Select from "react-select";
 import { GetproductList } from "src/modules/product/_redux/ProductAction";
 import { GetClientList } from "src/modules/client/_redux/ClientAction";
-const CreateSell = () => {
+import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
+const UpdateSell = () => {
+  const { id } = useParams()
+  const history = useHistory()
   const sellInput = useSelector((state) => state.sellInfo.sellInput);
   const sellArr = useSelector((state) => state.sellInfo.sellArr);
   const isSell = useSelector((state) => state.sellInfo.isSell);
+  const isUpdated = useSelector((state) => state.sellInfo.isUpdated);
   const ClientArrList = useSelector(
     (state) => state.clientInfo.clientList
   );
@@ -19,7 +23,7 @@ const CreateSell = () => {
     dispatch(GetSellInput(name, value));
   };
   const handleSubmit = () => {
-    dispatch(SubmitSell(sellInput, sellArr));
+    dispatch(SubmitSellUpdate(sellInput, sellArr, id));
   };
   const handleRemove = (id) => {
     dispatch(RemoveSellArr(id));
@@ -32,10 +36,18 @@ const CreateSell = () => {
     dispatch(GetClientList());
     dispatch(GetproductList());
   }, [])
+  useEffect(() => {
+    if (isUpdated) {
+      history.push("/sell")
+      dispatch(FalseAfterUpdate())
+    }
+  }, [isUpdated])
+
   console.log('sellInput', sellInput)
+  console.log('sellt', sellArr)
   return (
     <>
-      <h6 className="alert alert-secondary text-center">Sell Your Products</h6>
+      <h6 className="alert alert-secondary text-center">Update Your Selling Info</h6>
       <div className="row">
         <div className="col-sm-2"></div>
         <div className="col-sm-8">
@@ -152,7 +164,7 @@ const CreateSell = () => {
 
       </div>
       <div className="mt-3">
-        {sellArr.length > 0 && (
+        {sellArr?.length > 0 && (
           <table className="table table-striped">
             <thead>
               <tr>
@@ -253,7 +265,7 @@ const CreateSell = () => {
             className="btn btn-success btn-sm mt-3 text-light"
             onClick={() => handleSubmit()}
           >
-            SUBMIT
+            UPDATE
           </a>
         )}
       </div>
@@ -261,4 +273,4 @@ const CreateSell = () => {
   );
 };
 
-export default CreateSell;
+export default UpdateSell;
