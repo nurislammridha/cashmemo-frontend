@@ -69,94 +69,100 @@ const DownloadPdf = () => {
             </div>
             <div ref={ref} id="con">
                 <div className='container' ref={componentRef}>
-                    <div className='header'>
-                        <h1>It Solutions Computer</h1>
-                        <div><span>Show Room :</span> Friends Arcade Market (4th Floor), 77, Lower Jessore Road</div>
-                        <div>East Side of Jalil Tower, Khulna, Mobile: +88-01710-121138</div>
-                        <div>E-mail: sanjit121138@gmail.com</div>
-
-                    </div>
-                    <div className='bill_no'>
-                        <div>Bill No : 901</div>
-                        <div className='cash_memo'>INVOICE</div>
-                        <div><span>{moment(sellingDate).format('ll')}</span></div>
-                    </div>
-                    <div className='buyer_info'>
-                        <div className='name'>Name:<span>{name}</span></div>
-                        <div className='phone'>Phone:<span>{phone}</span></div>
-                        <div className='address'>Address:<span>{address}</span></div>
+                    <div className='invoice'>
+                        <span>Invoice/Bill</span>
                     </div>
                     <div className='table2'>
-                        <table >
+                        <table>
                             <tr>
-                                <th className='sl'>Sl.No</th>
-                                <th>Particular</th>
-                                <th className='qty'>QTY</th>
-                                <th className='unit_price'>UNIT PRICE</th>
-                                <th className='amount_tk'>AMOUNT TK</th>
-                            </tr>
-                            {sellingProducts?.length > 0 && sellingProducts.map((item, index) => (
-                                <tr key={index}>
-                                    <td>{index + 1}</td>
-                                    <td>{item?.productName}</td>
-                                    <td>{item?.quantity}</td>
-                                    <td>{item?.mrp}</td>
-                                    <td>{item?.mrp * item?.quantity}</td>
-                                </tr>
-                            ))}
-
-                            <tr>
-                                <td colSpan={3} rowSpan={3} className='goods total'>
-
-                                    <div className='mt-2'>Goods received in good order & condition.</div>
-                                    <div>sold Goods are not returnable & refundable</div>
-
+                                <td colSpan={2}>
+                                    <div>
+                                        <div className='ti_con'>
+                                            <div className='title'>IT COMPUTER SOLUTIONS</div>
+                                            <div className='trust'>Trust in Our Quality</div>
+                                        </div>
+                                        <div className='txt'>77, LOWER JESHORE ROAD, FRIDENDS ARCADE MARKET,</div>
+                                        <div className='txt'>4TH FLOOR, KHULNA-9100</div>
+                                        <div className='txt'>CELL 01710-121138</div>
+                                    </div>
                                 </td>
-                                <th><span>Total</span></th>
-                                <td><span>{total}</span></td>
-                            </tr>
-                            <tr>
-                                <th><span>Pre. Due</span></th>
-                                <td><span>{previousDue}</span></td>
-                            </tr>
-                            <tr>
-                                <th><span>Discount</span></th>
-                                <td><span>{discount}</span></td>
-                            </tr>
-
-                            <tr>
-                                <td colSpan={3} rowSpan={3} className='total'>
-                                    <span> {convertNumberToWords(pay)} Taka Only</span>
+                                <td colSpan={3}>
+                                    <div>Invoice No: 20240001</div>
+                                    <div>Sold By: SANJIT</div>
+                                    <div>Ref No: </div>
+                                    <div>Date: 21/09/2021</div>
                                 </td>
-                                <th><span>Gra. Total</span></th>
-                                <td><span>{grandTotal}</span></td>
+                                <td colSpan={2}>
+                                    <div>Print Date</div>
+                                    <div>20/04/2023</div>
+                                    <div>Print Time</div>
+                                    <div>4:50 PM</div>
+                                </td>
                             </tr>
                             <tr>
-
-                                <th>PAY</th>
-                                <td>{pay}</td>
+                                <td colSpan={2}>
+                                    <div>
+                                        <div className='to'>To</div>
+                                        <div className='shop_name'>QUICK COMPUTER KHULNA</div>
+                                        <div>3/GA FRIENDS ASK AKS SSK ASS</div>
+                                        <div>01753109207/01234567890</div>
+                                        <div>0234-2343</div>
+                                    </div>
+                                </td>
+                                <td colSpan={5}>
+                                    Attention
+                                </td>
                             </tr>
                             <tr>
-                                <th>BALANCE</th>
-                                <td>{currentDue}</td>
+                                <th>SL</th>
+                                <th>Description</th>
+                                <th>Qty</th>
+                                <th>Unit</th>
+                                <th>Warranty</th>
+                                <th>Unit Price</th>
+                                <th>UAmount</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Power supply 550w 12cm fan black</td>
+                                <td>2</td>
+                                <td>PCS</td>
+                                <td>12 month</td>
+                                <td>234</td>
+                                <td>234</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Power supply 550w 12cm fan black</td>
+                                <td>2</td>
+                                <td>PCS</td>
+                                <td>12 month</td>
+                                <td>234</td>
+                                <td>234</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td colSpan={6}>
+                                    <div className='footer'>
+                                        <div className='left'>
+                                            <div>TWO THOUSAND FIFTY FIVE ONLY</div>
+                                            <div className='fsb crnt'>
+                                                <div>Current Due Amount</div>
+                                                <div>9,15,500</div>
+                                            </div>
+                                        </div>
+                                        <div className='right'>
+                                            <div className='fsb taka'><div>Total Amount (BDT)</div><div>2,080</div></div>
+                                            <div className='fsb taka'><div>Add Vat (BDT)</div><div>2,080</div></div>
+                                            <div className='fsb taka'><div>Less Discount (BDT)</div><div>2,080</div></div>
+                                            <div className='fsb taka bb'><div>Add Installation/Service Charges (BDT)</div><div>2,080</div></div>
+                                            <div className='fsb taka2 pay'><div>Net Payable Amount</div><div>2,080</div></div>
+                                            <div className='fsb taka2'><div>Previous Due Amount</div><div>2,080</div></div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         </table>
-                    </div>
-                    <div className='footer'>
-                        <div className='signature'>
-                            <div className='client_signature'>Client's Signature</div>
-                            <div className='authorized_signature'>Authorized Signature</div>
-                        </div>
-                        <div className='footer_img'>
-                            <img src={longseIcon} alt='img' />
-                            <img src={hpIcon} alt='img' />
-                            <img src={dellIcon} alt='img' />
-                            <img src={canonIcon} alt='img' />
-                            <img src={dlinkIcon} alt='img' />
-                            <img src={spIcon} alt='img' />
-                            <img src={coolzerIcon} alt='img' />
-                            <img src={inkIcon} alt='img' />
-                        </div>
                     </div>
                 </div>
             </div>
