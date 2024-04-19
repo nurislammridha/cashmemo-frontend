@@ -77,6 +77,8 @@ const ProductList = () => {
                 <th>SL</th>
                 <th>Name</th>
                 <th>MRP</th>
+                <th>Unit</th>
+                <th>Warranty</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -86,6 +88,8 @@ const ProductList = () => {
                   <td>{index + 1}</td>
                   <td>{item.productName}</td>
                   <td>{item.productMRP}</td>
+                  <td>{item.unit}</td>
+                  <td>{item.warranty}</td>
                   <td>
                     <a
                       className="btn btn-outline-success btn-sm mr-2"

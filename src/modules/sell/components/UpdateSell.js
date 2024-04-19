@@ -113,6 +113,30 @@ const UpdateSell = () => {
                   />
                 </div>
               </div>
+              <div className="col-sm-4 mt-3">
+                <div className="">
+                  <h6 className="mb-3">Unit</h6>
+                  <input
+                    disabled
+                    className="form-control"
+                    value={sellInput.unit}
+                    type="text"
+                    placeholder="unit"
+                  />
+                </div>
+              </div>
+              <div className="col-sm-4 mt-3">
+                <div className="">
+                  <h6 className="mb-3">Warranty</h6>
+                  <input
+                    // disabled
+                    className="form-control"
+                    value={sellInput.warranty}
+                    type="text"
+                    placeholder="warranty"
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div className="mt-3">
@@ -159,6 +183,17 @@ const UpdateSell = () => {
             type="text"
             placeholder="01XXXXXXXXX"
             onChange={(e) => handleChangeInput("phone", e.target.value)}
+          />
+        </div>
+        <div className="mt-3">
+          <h6 className="mb-3">Telephone</h6>
+          <input
+            disabled
+            className="form-control"
+            value={sellInput.tel}
+            type="text"
+            placeholder="01XXXXXXXXX"
+            onChange={(e) => handleChangeInput("tel", e.target.value)}
           />
         </div>
 

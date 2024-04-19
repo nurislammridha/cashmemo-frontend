@@ -7,21 +7,23 @@ const UpdateClient = () => {
   const history = useHistory()
   const { id } = useParams()
   const location = useLocation()
-  const { name: n, address: ad, phone: p } = location?.state || {}
-  const [name, setName] = useState(n);
-  const [address, setAddress] = useState(ad);
-  const [phone, setPhone] = useState(p);
+  const { name: n, address: ad, phone: p, tel: t } = location?.state || {}
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [tel, setTel] = useState("");
   const isUpdatedClient = useSelector((state) => state.clientInfo.isUpdatedClient);
   const isUpdateClient = useSelector((state) => state.clientInfo.isUpdateClient);
   const dispatch = useDispatch();
   const handleSubmit = () => {
-    dispatch(UpdateClientData({ name, address, phone, id }));
+    dispatch(UpdateClientData({ name, address, phone, tel, id }));
   };
   useEffect(() => {
     if (isUpdatedClient) {
       setName("")
       setAddress("")
       setPhone("")
+      setTel("")
       history.push('/client')
       dispatch(FalseUpdate())
     }
@@ -30,6 +32,7 @@ const UpdateClient = () => {
     setName(n)
     setAddress(ad)
     setPhone(p)
+    setTel(t)
   }, [location])
   return (
     <>
@@ -59,8 +62,17 @@ const UpdateClient = () => {
             <input
               className="form-control"
               value={phone}
-              placeholder="01XXXXXXXXX"
+              placeholder="01XXXXXXXXX/01XXXXXXXXX"
               onChange={(e) => setPhone(e.target.value)}
+            />
+          </div>
+          <div className="mt-3">
+            <h6 className="mb-3">Client Telephone</h6>
+            <input
+              className="form-control"
+              value={tel}
+              placeholder="enter telephone"
+              onChange={(e) => setTel(e.target.value)}
             />
           </div>
           {isUpdateClient ? (

@@ -81,7 +81,7 @@ const SellList = () => {
                       className="btn btn-success btn-sm mr-2"
                       onClick={() => history.push({
                         pathname: '/download',
-                        state: { data: item }
+                        state: { data: item, index: index + 1 }
                       })}
                     >
                       <i className="fa fa-eye"></i>

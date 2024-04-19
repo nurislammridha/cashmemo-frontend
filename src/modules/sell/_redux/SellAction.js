@@ -11,7 +11,7 @@ export const GetSellInput = (name, value) => (dispatch) => {
 
 };
 export const GetSellArr = (data) => (dispatch) => {
-  const { productId, productName, mrp, quantity } = data
+  const { productId, productName, mrp, quantity, unit, warranty } = data
   if (productId.length === 0) {
     showToast("error", "Please select a product!");
     return 0;
@@ -24,9 +24,11 @@ export const GetSellArr = (data) => (dispatch) => {
   }
   dispatch(GetSellInput("productName", ""));
   dispatch(GetSellInput("productId", ""));
+  dispatch(GetSellInput("unit", ""));
+  dispatch(GetSellInput("warranty", ""));
   dispatch(GetSellInput("mrp", 0));
   dispatch(GetSellInput("quantity", 1));
-  const obj = { productId, productName, mrp, quantity }
+  const obj = { productId, productName, mrp, quantity, unit, warranty }
   dispatch({ type: Types.GET_SELL_ARR, payload: obj });
 };
 export const RemoveSellArr = (id) => (dispatch) => {
@@ -53,7 +55,7 @@ export const SubmitSell = (data, arr) => (dispatch) => {
   const postData = {
     clientId, clientInfo: clientId, previousDue,
     currentDue: (getTotal(arr) + previousDue) - (parseInt(balance) + parseInt(discount)),
-    total: getTotal(arr), grandTotal: getTotal(arr) + (previousDue - parseInt(discount)),
+    total: getTotal(arr), grandTotal: getTotal(arr) - parseInt(discount),
     pay: parseInt(balance),
     sellingDate: d,
     sellingProducts: arr,
@@ -179,6 +181,7 @@ export const getClientOption = (data) => {
         address: item.address,
         phone: item.phone,
         previousDue: item.due,
+        tel: item.tel,
       };
       arr.push(obj);
     });
@@ -193,6 +196,8 @@ export const getProductOption = (data) => {
         label: item.productName,
         value: item._id,
         mrp: item.productMRP,
+        unit: item.unit,
+        warranty: item.warranty,
       };
       arr.push(obj);
     });

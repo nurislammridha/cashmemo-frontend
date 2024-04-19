@@ -1,24 +1,20 @@
 import React, { createRef, useRef, useState } from 'react'
 import './pdf.css'
-import canonIcon from './img/canon.png'
-import coolzerIcon from './img/coolzer.png'
-import dellIcon from './img/dell.png'
-import dlinkIcon from './img/dlink.png'
-import hpIcon from './img/hp.png'
-import inkIcon from './img/ink.jpg'
-import longseIcon from './img/longse.jpg'
-import spIcon from './img/sp.jpg'
+
 import { jsPDF } from "jspdf";
 import { useHistory, useLocation } from 'react-router-dom'
 import moment from 'moment'
 import { convertNumberToWords } from '../_redux/SellAction'
 import { useReactToPrint } from 'react-to-print';
+import { genInvoice } from 'src/services/GlobalFunction';
 const DownloadPdf = () => {
+    const toDay = new Date()
     const history = useHistory()
     const location = useLocation()
-    const { clientInfo, currentDue, grandTotal, pay, previousDue, sellingDate, sellingProducts, total, discount } = location?.state?.data || {}
-    const { name, address, phone } = clientInfo || {}
-    let pdfTittle = name + "-" + moment(sellingDate).format('ll')
+    const invoice = location?.state?.index || 0
+    const { clientInfo, currentDue, grandTotal, pay, previousDue, sellingDate, sellingProducts, total, discount, serviceCharge, vat } = location?.state?.data || {}
+    const { name, address, phone, tel } = clientInfo || {}
+    let pdfTittle = name + "-" + moment(sellingDate).format('lll')
     const ref = createRef();
     const [loader, setLoader] = useState(false)
     const componentRef = useRef();
@@ -87,26 +83,26 @@ const DownloadPdf = () => {
                                     </div>
                                 </td>
                                 <td colSpan={3}>
-                                    <div>Invoice No: 20240001</div>
+                                    <div>Invoice No: {genInvoice(invoice)}</div>
                                     <div>Sold By: SANJIT</div>
                                     <div>Ref No: </div>
-                                    <div>Date: 21/09/2021</div>
+                                    <div>Date: {moment(sellingDate).format("DD/MM/YYYY")}</div>
                                 </td>
                                 <td colSpan={2}>
                                     <div>Print Date</div>
-                                    <div>20/04/2023</div>
+                                    <div>{moment(toDay).format("DD/MM/YYYY")}</div>
                                     <div>Print Time</div>
-                                    <div>4:50 PM</div>
+                                    <div>{moment(toDay).format("LT")}</div>
                                 </td>
                             </tr>
                             <tr>
                                 <td colSpan={2}>
                                     <div>
                                         <div className='to'>To</div>
-                                        <div className='shop_name'>QUICK COMPUTER KHULNA</div>
-                                        <div>3/GA FRIENDS ASK AKS SSK ASS</div>
-                                        <div>01753109207/01234567890</div>
-                                        <div>0234-2343</div>
+                                        <div className='shop_name'>{name}</div>
+                                        <div>{address}</div>
+                                        <div>{phone}</div>
+                                        <div>{tel}</div>
                                     </div>
                                 </td>
                                 <td colSpan={5}>
@@ -120,44 +116,38 @@ const DownloadPdf = () => {
                                 <th>Unit</th>
                                 <th>Warranty</th>
                                 <th>Unit Price</th>
-                                <th>UAmount</th>
+                                <th>Amount</th>
                             </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Power supply 550w 12cm fan black</td>
-                                <td>2</td>
-                                <td>PCS</td>
-                                <td>12 month</td>
-                                <td>234</td>
-                                <td>234</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Power supply 550w 12cm fan black</td>
-                                <td>2</td>
-                                <td>PCS</td>
-                                <td>12 month</td>
-                                <td>234</td>
-                                <td>234</td>
-                            </tr>
+                            {sellingProducts?.length > 0 && sellingProducts.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item?.productName}</td>
+                                    <td>{item?.quantity}</td>
+                                    <td>{item?.unit}</td>
+                                    <td>{item?.warranty}</td>
+                                    <td>{item?.mrp}</td>
+                                    <td>{item?.mrp * item?.quantity}</td>
+                                </tr>
+                            ))}
+
                             <tr>
                                 <td></td>
                                 <td colSpan={6}>
                                     <div className='footer'>
                                         <div className='left'>
-                                            <div>TWO THOUSAND FIFTY FIVE ONLY</div>
+                                            <div>{convertNumberToWords(total)} Only</div>
                                             <div className='fsb crnt'>
                                                 <div>Current Due Amount</div>
-                                                <div>9,15,500</div>
+                                                <div className='ml-5'>{currentDue}</div>
                                             </div>
                                         </div>
                                         <div className='right'>
-                                            <div className='fsb taka'><div>Total Amount (BDT)</div><div>2,080</div></div>
-                                            <div className='fsb taka'><div>Add Vat (BDT)</div><div>2,080</div></div>
-                                            <div className='fsb taka'><div>Less Discount (BDT)</div><div>2,080</div></div>
-                                            <div className='fsb taka bb'><div>Add Installation/Service Charges (BDT)</div><div>2,080</div></div>
-                                            <div className='fsb taka2 pay'><div>Net Payable Amount</div><div>2,080</div></div>
-                                            <div className='fsb taka2'><div>Previous Due Amount</div><div>2,080</div></div>
+                                            <div className='fsb taka'><div>Total Amount (BDT)</div><div>{total}</div></div>
+                                            <div className='fsb taka'><div>Add Vat (BDT)</div><div>{vat}</div></div>
+                                            <div className='fsb taka'><div>Less Discount (BDT)</div><div>{discount}</div></div>
+                                            <div className='fsb taka bb'><div>Add Installation/Service Charges (BDT)</div><div>{serviceCharge}</div></div>
+                                            <div className='fsb taka2 pay'><div>Net Payable Amount</div><div>{grandTotal}</div></div>
+                                            <div className='fsb taka2'><div>Previous Due Amount</div><div>{previousDue}</div></div>
                                         </div>
                                     </div>
                                 </td>

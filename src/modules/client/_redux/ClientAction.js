@@ -2,7 +2,7 @@ import * as Types from "./Types";
 import Axios from "axios";
 import { showToast } from "src/utils/ToastHelper";
 //test//est//
-export const SubmitClient = ({ name, address, phone }) => (dispatch) => {
+export const SubmitClient = ({ name, address, phone, tel }) => (dispatch) => {
   if (name.length === 0) {
     showToast("error", "Name shouldn't be empty");
     return 0;
@@ -15,7 +15,7 @@ export const SubmitClient = ({ name, address, phone }) => (dispatch) => {
   }
   const url = `${process.env.REACT_APP_API_URL}client`;
   dispatch({ type: Types.IS_CREATE_CLIENT, payload: true });
-  const postData = { name, address, phone };
+  const postData = { name, address, phone, tel };
   try {
     Axios.post(url, postData)
       .then((res) => {
@@ -37,7 +37,7 @@ export const SubmitClient = ({ name, address, phone }) => (dispatch) => {
     showToast("error", "Something went wrong");
   }
 };
-export const UpdateClientData = ({ name, address, phone, id }) => (dispatch) => {
+export const UpdateClientData = ({ name, address, phone, tel, id }) => (dispatch) => {
   if (name.length === 0) {
     showToast("error", "Name shouldn't be empty");
     return 0;
@@ -50,7 +50,7 @@ export const UpdateClientData = ({ name, address, phone, id }) => (dispatch) => 
   }
   const url = `${process.env.REACT_APP_API_URL}client/${id}`;
   dispatch({ type: Types.IS_UPDATE_CLIENT, payload: true });
-  const postData = { name, address, phone };
+  const postData = { name, address, phone, tel };
   try {
     Axios.put(url, postData)
       .then((res) => {

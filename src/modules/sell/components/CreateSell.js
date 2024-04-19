@@ -50,6 +50,7 @@ const CreateSell = () => {
                 handleChangeInput("address", e.address);
                 handleChangeInput("phone", e.phone);
                 handleChangeInput("previousDue", e.previousDue);
+                handleChangeInput("tel", e.tel);
               }}
             />
           </div>
@@ -62,6 +63,8 @@ const CreateSell = () => {
                 handleChangeInput("productName", e.label);
                 handleChangeInput("productId", e.value);
                 handleChangeInput("mrp", e.mrp);
+                handleChangeInput("unit", e.unit);
+                handleChangeInput("warranty", e.warranty);
               }}
             />
           </div>
@@ -101,6 +104,31 @@ const CreateSell = () => {
                   />
                 </div>
               </div>
+              <div className="col-sm-4 mt-3">
+                <div className="">
+                  <h6 className="mb-3">Unit</h6>
+                  <input
+                    disabled
+                    className="form-control"
+                    value={sellInput.unit}
+                    type="text"
+                    placeholder="unit"
+                  />
+                </div>
+              </div>
+              <div className="col-sm-4 mt-3">
+                <div className="">
+                  <h6 className="mb-3">Warranty</h6>
+                  <input
+                    // disabled
+                    className="form-control"
+                    value={sellInput.warranty}
+                    type="text"
+                    placeholder="warranty"
+                  />
+                </div>
+              </div>
+
             </div>
           </div>
           <div className="mt-3">
@@ -149,7 +177,17 @@ const CreateSell = () => {
             onChange={(e) => handleChangeInput("phone", e.target.value)}
           />
         </div>
-
+        <div className="mt-3">
+          <h6 className="mb-3">Telephone</h6>
+          <input
+            disabled
+            className="form-control"
+            value={sellInput.tel}
+            type="text"
+            placeholder="01XXXXXXXXX"
+            onChange={(e) => handleChangeInput("tel", e.target.value)}
+          />
+        </div>
       </div>
       <div className="mt-3">
         {sellArr.length > 0 && (
@@ -158,6 +196,8 @@ const CreateSell = () => {
               <tr>
                 <th>SL</th>
                 <th>Product</th>
+                <th>Unit</th>
+                <th>Warranty</th>
                 <th>Quantity</th>
                 <th>Mrp</th>
                 <th>Total</th>
@@ -170,6 +210,8 @@ const CreateSell = () => {
                 <tr>
                   <td>{index + 1}</td>
                   <td>{item.productName}</td>
+                  <td>{item.unit}</td>
+                  <td>{item.warranty}</td>
                   <td>{item.quantity}</td>
                   <td>{item.mrp} tk</td>
                   <td>{item.quantity * item.mrp} tk </td>
@@ -183,19 +225,19 @@ const CreateSell = () => {
               ))}
               <tr><td colSpan={6}></td></tr>
               <tr>
-                <td colSpan={3}></td>
+                <td colSpan={5}></td>
                 <td>Total</td>
                 <td>{getTotal(sellArr)}</td>
                 <td></td>
               </tr>
               <tr>
-                <td colSpan={3}></td>
-                <td>Pre. Due</td>
+                <td colSpan={5}></td>
+                <td>Previous Due</td>
                 <td>{sellInput.previousDue}</td>
                 <td></td>
               </tr>
               <tr>
-                <td colSpan={3}></td>
+                <td colSpan={5}></td>
                 <td>Discount</td>
                 <td colSpan={2}>
                   <input
@@ -209,13 +251,13 @@ const CreateSell = () => {
                 </td>
               </tr>
               <tr>
-                <td colSpan={3}></td>
-                <td>Gra. Total</td>
+                <td colSpan={5}></td>
+                <td>Payable</td>
                 <td>{getTotal(sellArr) + sellInput.previousDue - sellInput.discount}</td>
                 <td></td>
               </tr>
               <tr>
-                <td colSpan={3}></td>
+                <td colSpan={5}></td>
                 <td>Pay</td>
                 <td colSpan={2}>
                   <input
@@ -229,8 +271,8 @@ const CreateSell = () => {
                 </td>
               </tr>
               <tr>
-                <td colSpan={3}></td>
-                <td>Due</td>
+                <td colSpan={5}></td>
+                <td>Current Due</td>
                 <td>{(getTotal(sellArr) + sellInput.previousDue) - (parseInt(sellInput.balance) + parseInt(sellInput.discount))}</td>
                 <td></td>
               </tr>

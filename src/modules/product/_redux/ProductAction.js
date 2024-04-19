@@ -12,7 +12,7 @@ export const GetProductInput = (name, value) => (dispatch) => {
 
 };
 export const SubmitProduct = (data) => (dispatch) => {
-  const { productMRP, productName } = data
+  const { productMRP, productName, unit, warranty } = data
   if (productName.length === 0) {
     showToast("error", "Product name shouldn't be empty");
     return 0;
@@ -23,7 +23,7 @@ export const SubmitProduct = (data) => (dispatch) => {
   const url = `${process.env.REACT_APP_API_URL}product`;
   dispatch({ type: Types.IS_CREATE_PRODUCT, payload: true });
   try {
-    Axios.post(url, { productName, productMRP })
+    Axios.post(url, { productName, productMRP, warranty, unit })
       .then((res) => {
         if (res.data.status) {
           showToast("success", res.data.message);
@@ -45,7 +45,7 @@ export const SubmitProduct = (data) => (dispatch) => {
   }
 };
 export const UpdateProduct = (data, id) => (dispatch) => {
-  const { productName, productMRP } = data || {}
+  const { productName, productMRP, unit, warranty } = data || {}
   if (productName.length === 0) {
     showToast("error", "Product name shouldn't be empty");
     return 0;
@@ -56,7 +56,7 @@ export const UpdateProduct = (data, id) => (dispatch) => {
   const url = `${process.env.REACT_APP_API_URL}product/${id}`;
   dispatch({ type: Types.IS_CREATE_PRODUCT, payload: true });
   try {
-    Axios.put(url, { productName, productMRP })
+    Axios.put(url, { productName, productMRP, unit, warranty })
       .then((res) => {
         if (res.data.status) {
           showToast("success", res.data.message);

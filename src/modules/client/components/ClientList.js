@@ -76,6 +76,7 @@ const ClientList = () => {
                 <th>Name</th>
                 <th>Address</th>
                 <th>Phone</th>
+                <th>Tel</th>
                 <th>Due</th>
                 <th>Pay</th>
                 <th>Action</th>
@@ -88,6 +89,7 @@ const ClientList = () => {
                   <td>{item.name}</td>
                   <td>{item.address}</td>
                   <td>{item.phone}</td>
+                  <td>{item.tel}</td>
                   <td>{item.due} Tk</td>
                   <td>
                     <a

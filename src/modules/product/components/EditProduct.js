@@ -53,7 +53,24 @@ const EditProduct = () => {
               onChange={(e) => handleChangeInput("productMRP", e.target.value)}
             />
           </div>
-
+          <div className="mt-2">
+            <h6>Product Unit</h6>
+            <input
+              className="form-control"
+              type="text"
+              value={productInput.unit}
+              onChange={(e) => handleChangeInput("unit", e.target.value)}
+            />
+          </div>
+          <div className="mt-2">
+            <h6>Product Warranty</h6>
+            <input
+              className="form-control"
+              type="text"
+              value={productInput.warranty}
+              onChange={(e) => handleChangeInput("warranty", e.target.value)}
+            />
+          </div>
           <div className="mt-2 d-flex justify-content-end">
             {isCreateProduct ? (
               <a className="btn btn-outline-success mt-3">

@@ -6,17 +6,19 @@ const CreateClient = () => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
+  const [tel, setTel] = useState("");
   const isClient = useSelector((state) => state.clientInfo.isClient);
   const isSuccess = useSelector((state) => state.clientInfo.isSuccess);
   const dispatch = useDispatch();
   const handleSubmit = () => {
-    dispatch(SubmitClient({ name, address, phone }));
+    dispatch(SubmitClient({ name, address, phone, tel }));
   };
   useEffect(() => {
     if (!isClient) {
       setName("")
       setAddress("")
       setPhone("")
+      setTel("")
     }
   }, [isClient])
 
@@ -48,8 +50,17 @@ const CreateClient = () => {
             <input
               className="form-control"
               value={phone}
-              placeholder="01XXXXXXXXX"
+              placeholder="01XXXXXXXXX/01XXXXXXXXX"
               onChange={(e) => setPhone(e.target.value)}
+            />
+          </div>
+          <div className="mt-3">
+            <h6 className="mb-3">Client Telephone</h6>
+            <input
+              className="form-control"
+              value={tel}
+              placeholder="enter telephone"
+              onChange={(e) => setTel(e.target.value)}
             />
           </div>
           {isClient ? (

@@ -4,7 +4,9 @@ const initialState = {
   productList: null,
   productInput: {
     productName: "",
-    productMRP: ""
+    productMRP: "",
+    unit: "PCS",
+    warranty: "",
   },
   isCreateProduct: false,
   afterUpdate: false,
@@ -49,11 +51,13 @@ const ProductReducer = (state = initialState, action) => {
     case Types.PRE_UPDATE_PRODUCT:
       const {
         productName,
-        productMRP
+        productMRP, unit, warranty
       } = action.payload;
       let productEdit = initialState.productInput;
       productEdit.productName = productName;
       productEdit.productMRP = productMRP;
+      productEdit.unit = unit;
+      productEdit.warranty = warranty;
       return {
         ...state,
         productInput: productEdit,
