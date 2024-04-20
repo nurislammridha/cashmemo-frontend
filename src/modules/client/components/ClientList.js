@@ -78,7 +78,7 @@ const ClientList = () => {
                 <th>Phone</th>
                 <th>Tel</th>
                 <th>Due</th>
-                <th>Pay</th>
+                {/* <th>Pay</th> */}
                 <th>Action</th>
               </tr>
             </thead>
@@ -91,7 +91,7 @@ const ClientList = () => {
                   <td>{item.phone}</td>
                   <td>{item.tel}</td>
                   <td>{item.due} Tk</td>
-                  <td>
+                  {/* <td>
                     <a
                       className="btn btn-primary btn-sm mr-2"
                       onClick={() => {
@@ -101,7 +101,7 @@ const ClientList = () => {
                     >
                       <i className="fa fa-credit-card"></i>
                     </a>
-                  </td>
+                  </td> */}
                   <td>
                     <a
                       className="btn btn-success btn-sm mr-2"
