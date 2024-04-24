@@ -11,11 +11,14 @@ const ClientList = () => {
   const [show, setShow] = useState(false);
   const [amount, setAmount] = useState(0);
   const [modalData, setModalData] = useState({});
+  const [search, setSearch] = useState("");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const isPaidClient = useSelector((state) => state.clientInfo.isPaidClient);
   const isPayClient = useSelector((state) => state.clientInfo.isPayClient);
-  const ClientArrList = useSelector((state) => state.clientInfo.clientList);
+  const ClientList = useSelector((state) => state.clientInfo.clientList);
+  const { clients, pagination } = ClientList || {}
+  const { totalPage, nextPage, previousPage, currentPage } = pagination || {}
   const clientDeleted = useSelector(
     (state) => state.clientInfo.clientDeleted
   );
@@ -23,15 +26,6 @@ const ClientList = () => {
   const handlePay = () => {
     dispatch(SubmitPay({ ...modalData, amount }))
   }
-  useEffect(() => {
-    dispatch(GetClientList());
-  }, []);
-  useEffect(() => {
-    if (clientDeleted) {
-      dispatch(GetClientList());
-      dispatch(falseClientDeleted());
-    }
-  }, [clientDeleted]);
   const handleDelete = (id) => {
     confirmAlert({
       title: "Confirm To Delete",
@@ -47,6 +41,22 @@ const ClientList = () => {
       ],
     });
   };
+  const handlePagination = (page) => {
+    dispatch(GetClientList(search, page));
+  };
+  useEffect(() => {
+    dispatch(GetClientList());
+  }, []);
+  useEffect(() => {
+    dispatch(GetClientList(search));
+  }, [search]);
+  useEffect(() => {
+    if (clientDeleted) {
+      dispatch(GetClientList());
+      dispatch(falseClientDeleted());
+    }
+  }, [clientDeleted]);
+
   useEffect(() => {
     if (isPaidClient) {
       setShow(false)
@@ -58,17 +68,33 @@ const ClientList = () => {
   // console.log('ClientArrList', modalData)
   return (
     <>
-      <div className="d-flex justify-content-between">
-        <h4>Client List</h4>
-        <a
-          className="btn btn-success btn-sm text-light"
-          onClick={() => history.push("/Client-add")}
-        >
-          Add Client
-        </a>
+      <div className="row mb-2">
+        <div className="col-sm-2">
+          <h4>Client List</h4>
+        </div>
+        <div className="col-sm-1">Search</div>
+        <div className="col-sm-2">
+          <input
+            className="form-control"
+            type="text"
+            name="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <div className="col-sm-5"></div>
+        <div className="col-sm-2">
+          <a
+            className="btn btn-success btn-sm text-light float-end"
+            onClick={() => history.push("/Client-add")}
+          >
+            Add Client
+          </a>
+        </div>
       </div>
-      <div className="mt-3">
-        {ClientArrList != null && ClientArrList.length > 0 && (
+      <hr></hr>
+      <div className="mt-5 mb-5">
+        {ClientList != null && clients?.length > 0 && (
           <table className="table table-striped">
             <thead>
               <tr>
@@ -83,7 +109,7 @@ const ClientList = () => {
               </tr>
             </thead>
             <tbody>
-              {ClientArrList.map((item, index) => (
+              {clients.map((item, index) => (
                 <tr>
                   <td>{index + 1}</td>
                   <td>{item.name}</td>
@@ -125,6 +151,44 @@ const ClientList = () => {
           </table>
         )}
       </div>
+
+      <nav aria-label="Page navigation example mt-5">
+        <ul class="pagination">
+          {previousPage !== null && (<li
+            onClick={() => handlePagination(previousPage)}
+            class="page-item cp"><a class="page-link">Previous</a>
+          </li>)}
+          {(currentPage - 2) > 0 && (<li
+            onClick={() => handlePagination(currentPage - 2)}
+            class="page-item cp"><a class="page-link">{currentPage - 2}</a>
+          </li>)}
+          {(currentPage - 1) > 0 && (<li
+            onClick={() => handlePagination(currentPage - 1)}
+            class="page-item cp"><a class="page-link">{currentPage - 1}</a>
+          </li>)}
+
+          {totalPage !== currentPage && (<li
+            //  onClick={() => handlePagination(currentPage)}
+            class={totalPage !== currentPage ? "page-item cp active" : "page-item cp"}><a class="page-link" href="#">{currentPage}</a>
+          </li>)}
+          {(currentPage + 1) <= 3 && totalPage > 2 && (<li
+            onClick={() => handlePagination(currentPage + 1)}
+            class="page-item cp"><a class="page-link">{currentPage + 1}</a>
+          </li>)}
+          {(currentPage + 2) == 3 && totalPage > 2 && (<li
+            onClick={() => handlePagination(currentPage + 1)}
+            class="page-item cp"><a class="page-link">{currentPage + 2}</a>
+          </li>)}
+          {(totalPage - currentPage) > 1 && (<li class="page-item"><a class="page-link">-------</a></li>)}
+          <li
+            onClick={() => handlePagination(totalPage)}
+            class={totalPage === currentPage ? "page-item cp active" : "page-item cp"}><a class="page-link">{totalPage}</a></li>
+          {nextPage !== null && (<li
+            onClick={() => handlePagination(nextPage)}
+            class="page-item cp"><a class="page-link">Next</a>
+          </li>)}
+        </ul>
+      </nav>
       <div>
 
         <Modal show={show} onHide={handleClose}>

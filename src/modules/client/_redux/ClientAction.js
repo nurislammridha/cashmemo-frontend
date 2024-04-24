@@ -76,8 +76,8 @@ export const UpdateClientData = ({ name, address, phone, tel, id }) => (dispatch
 export const FalseUpdate = () => (dispatch) => {
   dispatch({ type: Types.AFTER_UPDATE_CLIENT, payload: false });
 }
-export const GetClientList = () => (dispatch) => {
-  const url = `${process.env.REACT_APP_API_URL}client`;
+export const GetClientList = (search = "", page = 1, limit = 20) => (dispatch) => {
+  const url = `${process.env.REACT_APP_API_URL}client?search=${search}&page=${page}&limit=${limit}`;
   try {
     Axios.get(url).then((res) => {
       if (res.data.status) {
